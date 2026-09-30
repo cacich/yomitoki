@@ -1,0 +1,86 @@
+{
+  "$comment": "所有可替換素材的代號、用途與建議尺寸。介面只透過代號讀取圖片；使用者把同名檔案（例如 mascot-welcome.png）放進 文件\\Yomitoki\\custom-assets\\ 即可覆蓋預設。",
+  "version": 1,
+  "formats": ["svg", "png", "webp"],
+  "assets": {
+    "app-icon": {
+      "purpose": "App 與安裝檔圖示的原始圖",
+      "purpose_en": "Source image for the app and installer icon",
+      "size": [1024, 1024],
+      "background": "transparent",
+      "default": "defaults/app-icon.svg"
+    },
+    "app-icon-small": {
+      "purpose": "16、32 px 小尺寸圖示用的簡化剪影（省略文字與抖動線條）",
+      "purpose_en": "Simplified silhouette used for 16/32 px icons",
+      "size": [256, 256],
+      "background": "transparent",
+      "default": "defaults/app-icon-small.svg"
+    },
+    "extension-icon": {
+      "purpose": "插件圖示的原始圖",
+      "purpose_en": "Source image for the browser extension icon",
+      "size": [512, 512],
+      "background": "transparent",
+      "default": "defaults/extension-icon.svg"
+    },
+    "mascot-welcome": {
+      "purpose": "首次啟動精靈的歡迎頁",
+      "purpose_en": "Welcome page of the first-run wizard",
+      "size": [800, 800],
+      "background": "transparent",
+      "default": "defaults/mascot-welcome.svg"
+    },
+    "mascot-guide": {
+      "purpose": "精靈各步驟的小狸貓",
+      "purpose_en": "Small tanuki shown on each wizard step",
+      "size": [400, 400],
+      "background": "transparent",
+      "default": "defaults/mascot-guide.svg"
+    },
+    "mascot-loading": {
+      "purpose": "翻譯進行中（可用動態 WebP）",
+      "purpose_en": "Translation in progress (animated WebP allowed)",
+      "size": [400, 400],
+      "background": "transparent",
+      "animated": true,
+      "default": "defaults/mascot-loading.svg"
+    },
+    "mascot-error": {
+      "purpose": "錯誤畫面",
+      "purpose_en": "Error screen",
+      "size": [800, 800],
+      "background": "transparent",
+      "default": "defaults/mascot-error.svg"
+    },
+    "empty-shelf": {
+      "purpose": "書架還沒有作品時",
+      "purpose_en": "Bookshelf with no series yet",
+      "size": [1200, 800],
+      "background": "transparent",
+      "default": "defaults/empty-shelf.svg"
+    },
+    "empty-series": {
+      "purpose": "作品還沒有任何一話時",
+      "purpose_en": "Series with no episodes yet",
+      "size": [1200, 800],
+      "background": "transparent",
+      "default": "defaults/empty-series.svg"
+    },
+    "paper-texture": {
+      "purpose": "背景紙紋，需可無縫拼接",
+      "purpose_en": "Seamless background paper texture",
+      "size": [512, 512],
+      "background": "opaque",
+      "tileable": true,
+      "default": "defaults/paper-texture.svg"
+    },
+    "readme-hero": {
+      "purpose": "README 與 GitHub 社群預覽圖",
+      "purpose_en": "README banner and GitHub social preview",
+      "size": [1280, 640],
+      "background": "opaque",
+      "default": "defaults/readme-hero.svg"
+    }
+  }
+}

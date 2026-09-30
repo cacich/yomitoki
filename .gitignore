@@ -1,0 +1,47 @@
+# ── 使用者資料：絕對不可進入公開 repo ─────────────────────────
+# 作品資料夾（詞彙表、劇情摘要、截圖、譯圖）
+series/
+# 個人測試用截圖
+samples/
+# 翻譯輸出
+output/
+# 使用者自訂素材（正常情況放在 文件\Yomitoki\custom-assets，這裡是保險）
+custom-assets/
+
+# ── 模型檔 ───────────────────────────────────────────────
+*.pth
+*.pt
+*.onnx
+*.ckpt
+*.safetensors
+models/
+
+# ── Python ──────────────────────────────────────────────
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# ── Node / 前端 ─────────────────────────────────────────
+node_modules/
+dist/
+*.tsbuildinfo
+
+# ── 建置產物 ────────────────────────────────────────────
+build/
+installer/Output/
+
+# ── 環境與系統檔 ─────────────────────────────────────────
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+.claude/launch.json
+.claude/settings.local.json

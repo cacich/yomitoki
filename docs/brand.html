@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yomitoki 品牌預覽</title>
+<link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@400;700&display=swap">
+<link rel="stylesheet" href="../ui/src/styles/tokens.css">
+<style>
+  /* 預覽頁用 CDN 載入粉圓；正式介面會把字型檔打包在本機 */
+  @font-face {
+    font-family: "jf-openhuninn";
+    src: url("https://cdn.jsdelivr.net/gh/justfont/open-huninn-font@master/font/jf-openhuninn-2.1.ttf") format("truetype");
+    font-display: swap;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg-page) url("../assets/defaults/paper-texture.svg");
+    background-size: 512px;
+    color: var(--text-primary);
+    font-family: var(--font-zh);
+    line-height: var(--leading-body);
+  }
+  :root[data-theme="night"] body { background-image: none; }
+  main { max-width: 1080px; margin: 0 auto; padding: var(--space-7) var(--space-4) var(--space-8); }
+  header { display: flex; align-items: center; gap: var(--space-5); flex-wrap: wrap; }
+  header img { width: 96px; height: 96px; }
+  h1 { font-family: var(--font-display); font-size: var(--text-display); line-height: var(--leading-tight); margin: 0; }
+  h1 small { display: block; font-family: var(--font-zh); font-size: var(--text-lg); color: var(--color-terracotta-deep); font-weight: 700; }
+  h2 { font-family: var(--font-display); font-size: var(--text-xl); margin: var(--space-7) 0 var(--space-4); display: flex; align-items: center; gap: var(--space-3); }
+  h2::after { content: ""; flex: 1; border-top: 2px dashed var(--line-divider); }
+  p.lead { color: var(--text-secondary); max-width: 60ch; }
+  .toolbar { margin-left: auto; }
+  .card {
+    background: var(--bg-card);
+    border: var(--sketch-stroke) solid var(--line-sketch);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-soft);
+    padding: var(--space-5);
+  }
+  .grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+  .swatch { padding: 0; overflow: hidden; }
+  .swatch .chip { height: 84px; border-bottom: var(--sketch-stroke) solid var(--line-sketch); }
+  .swatch .meta { padding: var(--space-3) var(--space-4); font-size: var(--text-sm); }
+  .swatch code { font-size: var(--text-xs); color: var(--text-secondary); }
+  .ratio { font-size: var(--text-xs); color: var(--text-secondary); }
+  .btn {
+    font: inherit; font-weight: 700; cursor: pointer;
+    background: var(--button-primary-bg); color: var(--button-primary-text);
+    border: var(--sketch-stroke) solid var(--line-sketch); border-radius: var(--radius-pill);
+    padding: var(--space-2) var(--space-5);
+    transition: transform var(--motion-fast) var(--ease-soft), box-shadow var(--motion-fast) var(--ease-soft);
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-lifted); }
+  .btn:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+  .btn.ghost { background: var(--bg-card); color: var(--text-primary); }
+  .tag { display: inline-block; padding: 2px var(--space-3); border-radius: var(--radius-pill); font-size: var(--text-sm); color: var(--text-on-tag); border: 1.5px solid var(--line-sketch); }
+  .row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+  .type-sample > div { padding: var(--space-3) 0; border-bottom: 1px dashed var(--line-divider); }
+  .type-sample > div:last-child { border-bottom: 0; }
+  .type-sample .label { font-family: var(--font-body); font-size: var(--text-xs); color: var(--text-secondary); display: block; }
+  .tape { position: relative; }
+  .tape::before {
+    content: ""; position: absolute; top: -12px; left: 24px; width: 88px; height: 24px;
+    background: var(--color-rose); opacity: .75; transform: rotate(-4deg);
+  }
+  .assets { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+  .asset figure { margin: 0; }
+  .asset .frame {
+    aspect-ratio: 4 / 3; display: grid; place-items: center; border-radius: var(--radius-card-sm);
+    background: repeating-conic-gradient(rgb(107 90 78 / .06) 0% 25%, transparent 0% 50%) 50% / 20px 20px;
+    border: 1.5px dashed var(--line-divider); overflow: hidden;
+  }
+  .asset img { max-width: 92%; max-height: 92%; object-fit: contain; }
+  .asset figcaption { margin-top: var(--space-2); font-size: var(--text-sm); }
+  .asset code { font-size: var(--text-xs); color: var(--text-secondary); }
+  .icons .row img { image-rendering: auto; }
+  .icons figure { margin: 0; text-align: center; font-size: var(--text-xs); color: var(--text-secondary); }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="../assets/defaults/app-icon.svg" alt="Yomitoki 圖示">
+    <h1>Yomitoki<small>よみとき・讀解</small></h1>
+    <div class="toolbar"><button class="btn ghost" id="theme">切換夜讀模式</button></div>
+  </header>
+  <p class="lead">溫暖手繪 × 日系編輯排版。這頁直接讀取 <code>ui/src/styles/tokens.css</code> 與 <code>assets/</code>，改動 token 或替換素材後重新整理即可看到結果。</p>
+
+  <h2>色票</h2>
+  <div class="grid" id="palette"></div>
+
+  <h2>元件</h2>
+  <div class="card tape">
+    <div class="row">
+      <button class="btn">開始翻譯</button>
+      <button class="btn ghost">稍後再說</button>
+      <span class="tag" style="background:var(--bg-tag-sage)">已完成</span>
+      <span class="tag" style="background:var(--bg-tag-butter)">待確認 3</span>
+      <span class="tag" style="background:var(--bg-tag-rose)">翻譯中</span>
+    </div>
+    <p style="margin-bottom:0">第 12 話・24 頁 <span style="color:var(--text-secondary)">— 次要文字示範，上次閱讀於昨天</span></p>
+  </div>
+
+  <h2>字體</h2>
+  <div class="card type-sample">
+    <div><span class="label">中文・jf open 粉圓</span><span style="font-family:var(--font-zh);font-size:var(--text-xl)">把看不懂的漫畫讀懂</span></div>
+    <div><span class="label">英文標題・Fraunces</span><span style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:700">A cozy little reading room</span></div>
+    <div><span class="label">英文內文・Nunito</span><span style="font-family:var(--font-body)">Translate the pages you capture, keep names consistent, read at your own pace.</span></div>
+    <div><span class="label">手寫點綴・Caveat</span><span style="font-family:var(--font-hand);font-size:var(--text-xl)">new word! please check ✎</span></div>
+  </div>
+
+  <h2>圖示</h2>
+  <div class="card icons">
+    <div class="row">
+      <figure><img src="../assets/icons/favicon-32.png" width="16" height="16" alt=""><br>16</figure>
+      <figure><img src="../assets/icons/favicon-32.png" width="32" height="32" alt=""><br>32</figure>
+      <figure><img src="../assets/icons/app-icon-128.png" width="48" height="48" alt=""><br>48</figure>
+      <figure><img src="../assets/icons/app-icon-128.png" width="128" height="128" alt=""><br>128</figure>
+      <figure><img src="../assets/icons/extension/icon-16.png" width="16" height="16" alt=""><br>插件 16</figure>
+      <figure><img src="../assets/icons/extension/icon-48.png" width="48" height="48" alt=""><br>插件 48</figure>
+      <figure><img src="../assets/icons/extension/icon-128.png" width="128" height="128" alt=""><br>插件 128</figure>
+    </div>
+  </div>
+
+  <h2>可替換素材</h2>
+  <p class="lead">把同名檔案放進 <code>文件\Yomitoki\custom-assets\</code> 就會取代預設圖片（SVG、PNG、WebP）。</p>
+  <div class="grid assets" id="assets"></div>
+</main>
+<script>
+  // 與 assets/manifest.json 同步（tests/test_brand_page.py 會檢查）
+  const ASSETS = [
+    ["app-icon", "App 與安裝檔圖示的原始圖", "1024 × 1024"],
+    ["app-icon-small", "16、32 px 用的簡化剪影", "256 × 256"],
+    ["extension-icon", "插件圖示的原始圖", "512 × 512"],
+    ["mascot-welcome", "首次啟動精靈的歡迎頁", "800 × 800"],
+    ["mascot-guide", "精靈各步驟的小狸貓", "400 × 400"],
+    ["mascot-loading", "翻譯進行中（有動畫）", "400 × 400"],
+    ["mascot-error", "錯誤畫面", "800 × 800"],
+    ["empty-shelf", "書架還沒有作品時", "1200 × 800"],
+    ["empty-series", "作品還沒有任何一話時", "1200 × 800"],
+    ["paper-texture", "背景紙紋，可無縫拼接", "512 × 512"],
+    ["readme-hero", "README 與社群預覽圖", "1280 × 640"],
+  ];
+  document.getElementById("assets").innerHTML = ASSETS.map(([id, purpose, size]) => `
+    <div class="card asset"><figure>
+      <div class="frame"><img src="../assets/defaults/${id}.svg" alt="${purpose}" loading="lazy"></div>
+      <figcaption><code>${id}</code><br>${purpose}<br><code>${size}</code></figcaption>
+    </figure></div>`).join("");
+
+  const SWATCHES = [
+    ["燕麥米", "--color-oat", "頁面背景"],
+    ["奶油白", "--color-cream", "卡片紙面"],
+    ["陶土橘", "--color-terracotta", "主色（裝飾）"],
+    ["深陶土", "--color-terracotta-deep", "主要按鈕"],
+    ["鼠尾草綠", "--color-sage", "輔色"],
+    ["奶油黃", "--color-butter", "點綴"],
+    ["霧玫瑰", "--color-rose", "點綴"],
+    ["可可棕", "--color-cocoa", "主要文字"],
+    ["灰褐", "--color-taupe", "次要文字"],
+    ["胡桃棕", "--color-walnut", "手繪線條"],
+  ];
+  const lum = hex => {
+    const c = hex.replace("#", "").match(/../g).map(h => parseInt(h, 16) / 255)
+      .map(v => v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  };
+  const contrast = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+  function renderPalette() {
+    const css = getComputedStyle(document.documentElement);
+    const v = name => css.getPropertyValue(name).trim();
+    const page = v("--color-oat");
+    document.getElementById("palette").innerHTML = SWATCHES.map(([name, token, use]) => {
+      const hex = v(token);
+      return `<div class="card swatch"><div class="chip" style="background:${hex}"></div>
+        <div class="meta"><b>${name}</b>・${use}<br><code>${token} ${hex.toUpperCase()}</code><br>
+        <span class="ratio">對頁面背景 ${contrast(hex, page).toFixed(2)}:1</span></div></div>`;
+    }).join("");
+  }
+  renderPalette();
+
+  const root = document.documentElement;
+  const btn = document.getElementById("theme");
+  btn.addEventListener("click", () => {
+    const night = root.dataset.theme !== "night";
+    if (night) root.dataset.theme = "night"; else delete root.dataset.theme;
+    btn.textContent = night ? "切換一般模式" : "切換夜讀模式";
+    renderPalette();
+  });
+</script>
+</body>
+</html>
