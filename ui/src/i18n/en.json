@@ -1,0 +1,82 @@
+{
+  "app": { "tagline": "read & unravel" },
+  "nav": { "label": "Main navigation", "shelf": "Shelf", "settings": "Settings", "backToShelf": "Back to the shelf" },
+  "theme": { "light": "Day mode", "night": "Night mode" },
+  "errors": { "notFound": "This page doesn't exist" },
+  "common": {
+    "loading": "Loading…", "cancel": "Cancel", "saving": "Saving…", "planned": "planned", "close": "Close",
+    "edit": "Edit", "save": "Save", "saved": "Saved"
+  },
+  "lang": { "ja": "Japanese", "zh-TW": "Traditional Chinese", "ko": "Korean", "en": "English", "zh": "Chinese" },
+  "shelf": {
+    "issue": "Issue {month} · {year} · Yomitoki",
+    "title": "My Shelf",
+    "lead": "Read the manga you couldn't read, one page at a time.",
+    "new": "+ New series",
+    "newTitle": "Add a series",
+    "create": "Create",
+    "emptyTitle": "Your shelf is empty",
+    "emptyText": "Add a series, drop in your screenshots, and start translating.",
+    "meta": "{episodes} episodes · {done} / {pages} pages done",
+    "pending": "{n} to review"
+  },
+  "series": {
+    "name": "Series name", "namePlaceholder": "e.g. Tanuki Diary",
+    "format": "Format", "formatPage": "Pages (turn page by page)", "formatScroll": "Vertical scroll (webtoon)",
+    "format_page": "Pages", "format_scroll": "Vertical scroll",
+    "source": "From", "target": "Into",
+    "episodes": "Episodes", "addEpisode": "+ New episode", "addFirst": "Add episode 1",
+    "emptyTitle": "No episodes yet", "emptyText": "Add an episode, then drag your screenshots onto it.",
+    "statEpisodes": "Episodes", "statPages": "Pages done", "statTerms": "Confirmed terms",
+    "glossary": "Glossary & rules", "openFolder": "Open folder",
+    "episodeLabel": "Episode {n}", "pageCount": "{n} pages",
+    "status_empty": "No screenshots", "status_todo": "To translate", "status_partial": "In progress", "status_done": "Done",
+    "progressLabel": "{done} / {total} pages done",
+    "upload": "Add screenshots", "uploading": "Uploading…",
+    "translate": "Translate episode", "rerender": "Re-typeset", "retranslate": "Retranslate", "read": "Read",
+    "dropHint": "Drop screenshots here, or use “Add screenshots”."
+  },
+  "job": {
+    "step_queued": "Queued", "step_ocr": "Reading the text", "step_translate": "Translating with Claude Code", "step_render": "Cleaning and typesetting",
+    "waiting": "Getting ready…",
+    "done": "This episode is translated.", "failed": "Didn't finish: {error}",
+    "newTerms": "{n} new terms to review,", "reviewTerms": "review them",
+    "warnings": "{n} notes"
+  },
+  "reader": {
+    "toolbar": "Reader toolbar", "back": "← Series", "noPages": "This episode has no pages yet.", "pageAlt": "Page {n}",
+    "showOriginal": "Original", "showTranslation": "Translation",
+    "holdHint": "Hold Space to peek at the original · ← → to turn pages", "viewingOriginal": "Showing the original",
+    "notTranslated": "Not translated yet, showing the original"
+  },
+  "glossary": {
+    "title": "Glossary & rules",
+    "lead": "Confirmed terms are used exactly as written in every translation. The model can't change them.",
+    "changedHint": "Changed a term? Press “Retranslate” on the series page to apply it to finished pages.",
+    "goRetranslate": "Go to the series",
+    "pending": "Terms to review", "pendingLead": "New names found while translating, with a suggested translation. They're fixed once you confirm them.",
+    "confirmed": "Confirmed terms",
+    "emptyTitle": "The glossary is empty", "emptyText": "New names and places will show up here for you to confirm.",
+    "source": "Original", "target": "Translation", "category": "Type", "note": "Note", "actions": "Actions",
+    "cat_character": "Character", "cat_place": "Place", "cat_technique": "Technique", "cat_item": "Item", "cat_other": "Other",
+    "seenAt": "First seen in {where}", "targetFor": "Translation of “{source}”",
+    "confirm": "Confirm", "remove": "Delete", "add": "Add",
+    "notes": "Tone rules & story so far",
+    "rules": "Tone and honorific rules", "rulesHint": "Speech habits, honorifics, how each character refers to themselves. Sent with every translation.",
+    "summary": "Story so far", "summaryHint": "Add a short paragraph after each episode so the model knows what happened."
+  },
+  "settings": {
+    "title": "Settings", "status": "Status",
+    "gpu": "Graphics card", "gpuOk": "{name} · {vram} GB, used for acceleration", "gpuCpu": "No NVIDIA card found. Running on the CPU (several times slower per page).",
+    "claudeMissing": "Claude Code isn't installed. Translation needs it.", "claudeOk": "Signed in · {plan} · version {version}",
+    "claudeLogin": "Not signed in. Run claude in a terminal and follow the steps.",
+    "dataHome": "Series folder", "models": "Models folder", "version": "Version",
+    "appearance": "Appearance", "nightMode": "Night mode", "nightModeHint": "Deep cocoa background, easier on the eyes at night",
+    "language": "Interface language", "languageHint": "Only changes the interface, not the translation language",
+    "assets": "Artwork",
+    "assetsLead": "Illustrations, the mascot and icons can all be replaced with your own images (SVG, PNG, WebP). Images that don't match are scaled to fit and centered.",
+    "source_default": "Default", "source_custom": "Custom",
+    "recommended": "Recommended {w} × {h} ({w2} × {h2} for raster images)", "transparent": "transparent background",
+    "replace": "Replace", "restore": "Restore default"
+  }
+}

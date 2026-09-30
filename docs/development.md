@@ -58,10 +58,26 @@ yomitoki glossary confirm "作品名" タヌ吉 狸吉
 yomitoki episode translate "作品名" 1 --force
 yomitoki episode render "作品名" 1     # 只重做嵌字，沿用 OCR 與擦字結果
 
-# 本機 API
+# 本機伺服器（API ＋ 介面）
 yomitoki serve
-curl.exe -X POST --data-binary "@tests\fixtures\ja-page-01.png" -H "Content-Type: image/png" http://127.0.0.1:8765/translate -o out.png
+#   介面：http://127.0.0.1:8765（需要先建置 ui，見下方）
+#   會改變資料的請求都要帶 X-Yomitoki-Client 標頭（防止其他網站跨站呼叫）
+curl.exe -X POST --data-binary "@tests\fixtures\ja-page-01.png" -H "Content-Type: image/png" -H "X-Yomitoki-Client: curl" http://127.0.0.1:8765/translate -o out.png
 ```
+
+## 介面（ui/）
+
+Vite + React + TypeScript。手繪輪廓用 rough.js，英文字體用 @fontsource 打包在本機；中文介面字型（jf open 粉圓）由後端第一次啟動時下載，網址是 `/fonts/jf-openhuninn.ttf`。
+
+```powershell
+cd ui
+npm install
+npm run build        # 輸出到 ui/dist，yomitoki serve 會直接提供
+npm run dev          # 開發模式：http://127.0.0.1:5173，/api 轉給 yomitoki serve
+npm test             # 語系檔檢查（兩種語言的 key 一致、程式用到的 key 都存在）
+```
+
+介面文字都放在 `ui/src/i18n/zh-TW.json` 與 `en.json`，新增文字時兩個檔案都要加。
 
 整話也可以在 Claude Code 裡翻：先執行 `yomitoki episode ocr`，再輸入 `/translate-episode 作品名 1`。
 

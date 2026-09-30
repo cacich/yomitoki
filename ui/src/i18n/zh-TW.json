@@ -1,0 +1,82 @@
+{
+  "app": { "tagline": "讀解" },
+  "nav": { "label": "主要導覽", "shelf": "書架", "settings": "設定", "backToShelf": "回到書架" },
+  "theme": { "light": "一般模式", "night": "夜讀模式" },
+  "errors": { "notFound": "找不到這一頁" },
+  "common": {
+    "loading": "載入中…", "cancel": "取消", "saving": "儲存中…", "planned": "規劃中", "close": "關閉",
+    "edit": "編輯", "save": "儲存", "saved": "已儲存"
+  },
+  "lang": { "ja": "日文", "zh-TW": "繁體中文", "ko": "韓文", "en": "英文", "zh": "中文" },
+  "shelf": {
+    "issue": "{year} 年 {month} 月號 · Yomitoki",
+    "title": "我的書架",
+    "lead": "把看不懂的漫畫，一頁一頁讀懂。",
+    "new": "＋ 新增作品",
+    "newTitle": "新增一部作品",
+    "create": "建立",
+    "emptyTitle": "書架還空空的",
+    "emptyText": "先新增一部作品，再把截圖放進去就能開始翻譯。",
+    "meta": "{episodes} 話 · 已完成 {done} / {pages} 頁",
+    "pending": "待確認 {n}"
+  },
+  "series": {
+    "name": "作品名", "namePlaceholder": "例如：狸貓日記",
+    "format": "格式", "formatPage": "頁漫（一頁一頁翻）", "formatScroll": "條漫（往下捲動）",
+    "format_page": "頁漫", "format_scroll": "條漫",
+    "source": "原文", "target": "翻成",
+    "episodes": "各話", "addEpisode": "＋ 新增一話", "addFirst": "新增第 1 話",
+    "emptyTitle": "還沒有任何一話", "emptyText": "新增一話之後，把截圖拖進來就可以翻譯。",
+    "statEpisodes": "話數", "statPages": "完成頁數", "statTerms": "已確定譯名",
+    "glossary": "詞彙表與規則", "openFolder": "開啟資料夾",
+    "episodeLabel": "第 {n} 話", "pageCount": "{n} 頁",
+    "status_empty": "還沒有截圖", "status_todo": "待翻譯", "status_partial": "翻譯中", "status_done": "已完成",
+    "progressLabel": "已完成 {done} / {total} 頁",
+    "upload": "加入截圖", "uploading": "上傳中…",
+    "translate": "翻譯這一話", "rerender": "重新嵌字", "retranslate": "重新翻譯", "read": "閱讀",
+    "dropHint": "把截圖拖到這裡，或按「加入截圖」。"
+  },
+  "job": {
+    "step_queued": "排隊中", "step_ocr": "辨識文字中", "step_translate": "Claude Code 翻譯中", "step_render": "擦字與嵌字中",
+    "waiting": "準備中…",
+    "done": "這一話翻好了。", "failed": "沒有完成：{error}",
+    "newTerms": "新增 {n} 個待確認名詞，", "reviewTerms": "去確認",
+    "warnings": "{n} 則提醒"
+  },
+  "reader": {
+    "toolbar": "閱讀工具列", "back": "← 回作品", "noPages": "這一話還沒有頁面。", "pageAlt": "第 {n} 頁",
+    "showOriginal": "看原文", "showTranslation": "看譯文",
+    "holdHint": "按住空白鍵暫時看原文 · ← → 翻頁", "viewingOriginal": "正在看原文",
+    "notTranslated": "這一頁還沒翻譯，顯示原文"
+  },
+  "glossary": {
+    "title": "詞彙表與規則",
+    "lead": "已確定的譯名，每次翻譯都會一字不差地使用；模型不能自己更動。",
+    "changedHint": "譯名改好了？到作品頁按「重新翻譯」，已翻好的頁面就會套用新的譯名。",
+    "goRetranslate": "回作品頁",
+    "pending": "待確認的名詞", "pendingLead": "翻譯時遇到的新名詞，先用暫定譯名。確認後才會固定下來。",
+    "confirmed": "已確定的譯名",
+    "emptyTitle": "詞彙表還是空的", "emptyText": "翻譯時出現新的人名或地名，會先列在這裡等你確認。",
+    "source": "原文", "target": "譯名", "category": "類別", "note": "備註", "actions": "動作",
+    "cat_character": "角色", "cat_place": "地名", "cat_technique": "招式", "cat_item": "道具", "cat_other": "其他",
+    "seenAt": "出現在 {where}", "targetFor": "「{source}」的譯名",
+    "confirm": "確認", "remove": "刪除", "add": "加入",
+    "notes": "語氣規則與劇情摘要",
+    "rules": "語氣與稱謂規則", "rulesHint": "角色口癖、敬語怎麼處理、第一人稱怎麼翻。翻譯時會整份帶入。",
+    "summary": "劇情摘要", "summaryHint": "每翻完一話補一段，幫助模型理解前情。"
+  },
+  "settings": {
+    "title": "設定", "status": "狀態",
+    "gpu": "顯示卡", "gpuOk": "{name} · {vram} GB，會用顯示卡加速", "gpuCpu": "沒有偵測到 NVIDIA 顯示卡，改用 CPU 模式（每頁會慢上好幾倍）",
+    "claudeMissing": "還沒安裝 Claude Code，翻譯需要它", "claudeOk": "已登入 · {plan} · 版本 {version}",
+    "claudeLogin": "還沒登入：請在終端機執行 claude，依畫面指示登入",
+    "dataHome": "作品資料位置", "models": "模型位置", "version": "版本",
+    "appearance": "外觀", "nightMode": "夜讀模式", "nightModeHint": "深可可色底，晚上讀比較不刺眼",
+    "language": "介面語言", "languageHint": "只影響介面文字，不影響翻譯的目標語言",
+    "assets": "外觀素材",
+    "assetsLead": "插畫、吉祥物與圖示都可以換成你自己的圖片（SVG、PNG、WebP）。尺寸不符時會等比縮放、置中顯示。",
+    "source_default": "預設", "source_custom": "自訂",
+    "recommended": "建議 {w} × {h}（點陣圖建議 {w2} × {h2}）", "transparent": "透明背景",
+    "replace": "換一張", "restore": "還原預設"
+  }
+}

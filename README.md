@@ -10,7 +10,7 @@
 
 Yomitoki is a personal, multilingual manga reading tool. It runs OCR, translation and typesetting on screenshots **you take yourself**, then lets you read the result in a local, hand-drawn-style reader.
 
-> **Status: pre-alpha.** M1 (skeleton and brand) and M2 (translation core, command line and local API) are done. The UI and the browser extension are not implemented yet.
+> **Status: pre-alpha.** M1 (skeleton and brand), M2 (translation core) and M3 (UI: shelf, series page, reader, glossary, settings) are done. The browser extension and the installer are not implemented yet.
 
 ## Usage notice
 
@@ -37,7 +37,7 @@ Each series keeps its own memory: a glossary, style rules and a plot summary. Ch
 | v0.2 | Vertical-scroll (webtoon) mode, Korean → Traditional Chinese, re-apply glossary without re-running OCR |
 | v0.3 | English and Chinese sources; English, Japanese and Korean targets; English UI |
 
-Development milestones: M1 skeleton and brand ✅ · M2 translation core ✅ · M3 UI · M4 browser extension · M5 installer · M6 v0.1 release.
+Development milestones: M1 skeleton and brand ✅ · M2 translation core ✅ · M3 UI ✅ · M4 browser extension · M5 installer · M6 v0.1 release.
 
 ## Customizing the look
 
@@ -69,7 +69,7 @@ yomitoki series new "My Series"
 yomitoki episode run "My Series" 1
 ```
 
-You can also start the local API with `yomitoki serve`: `POST /translate` takes a PNG and returns the translated PNG.
+Or run `yomitoki serve` and open http://127.0.0.1:8765 to use the UI (build it first with `npm run build` in `ui/`).
 
 ## Development
 

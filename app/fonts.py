@@ -16,6 +16,26 @@ log = logging.getLogger("yomitoki.fonts")
 
 OFL_URL = "https://github.com/notofonts/noto-cjk/raw/Sans2.004/LICENSE"
 
+# 介面字型（中文）：jf open 粉圓 2.1，OFL-1.1。英文介面字型由前端的 @fontsource 套件打包。
+UI_FONTS: dict[str, FontSpec] = {
+    "jf-openhuninn": FontSpec(
+        "jf-openhuninn", "jf-openhuninn-2.1.ttf",
+        "https://github.com/justfont/open-huninn-font/raw/v2.1/font/jf-openhuninn-2.1.ttf",
+    ),
+}
+HUNINN_LICENSE_URL = "https://github.com/justfont/open-huninn-font/raw/v2.1/LICENSE"
+
+
+def ensure_ui_font(font_id: str) -> Path:
+    spec = UI_FONTS[font_id]
+    target = font_path(spec)
+    if not (target.is_file() and target.stat().st_size > 0):
+        target.parent.mkdir(parents=True, exist_ok=True)
+        log.info("下載介面字型 %s …", spec.filename)
+        _download(spec.url, target)
+        _download(HUNINN_LICENSE_URL, target.parent / "jf-openhuninn-LICENSE.txt")
+    return target
+
 
 def font_path(spec: FontSpec) -> Path:
     return paths.fonts_dir() / spec.filename
