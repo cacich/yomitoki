@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yomitoki</title>
+    <link rel="stylesheet" href="tokens.css" />
+    <link rel="stylesheet" href="sidepanel.css" />
+  </head>
+  <body>
+    <header class="head">
+      <img src="icons/icon-32.png" alt="" width="28" height="28" />
+      <h1 data-i18n="panelTitle"></h1>
+      <span id="status" class="status" data-state="checking">
+        <span class="status__dot" aria-hidden="true"></span>
+        <span id="status-text" data-i18n="statusChecking"></span>
+      </span>
+    </header>
+
+    <section id="down" class="card card--warn" hidden>
+      <p class="strong" data-i18n="statusDown"></p>
+      <p class="muted" data-i18n="statusDownHint"></p>
+    </section>
+
+    <section class="card" aria-labelledby="target-heading">
+      <h2 id="target-heading" class="visually-hidden" data-i18n="series"></h2>
+      <label class="field">
+        <span class="field__label" data-i18n="series"></span>
+        <select id="series" class="input"></select>
+      </label>
+      <div id="episode-row" class="field" hidden>
+        <span class="field__label" id="episode-label" data-i18n="episode"></span>
+        <div class="row">
+          <select id="episode" class="input" aria-labelledby="episode-label"></select>
+          <button id="new-episode" type="button" class="btn btn--quiet" data-i18n="newEpisode"></button>
+        </div>
+      </div>
+      <fieldset class="field mode">
+        <legend class="field__label" data-i18n="mode"></legend>
+        <label class="mode__opt"><input type="radio" name="mode" value="translate" /> <span data-i18n="modeTranslate"></span></label>
+        <label class="mode__opt"><input type="radio" name="mode" value="save" /> <span data-i18n="modeSave"></span></label>
+      </fieldset>
+      <p id="mode-hint" class="muted small" data-i18n="modeSaveHint" hidden></p>
+    </section>
+
+    <section class="capture">
+      <p class="shortcut"><span id="shortcut"></span> <a href="#" id="change-shortcut" class="small" data-i18n="shortcutChange"></a></p>
+      <button id="capture" type="button" class="btn btn--primary" data-i18n="captureButton"></button>
+    </section>
+
+    <section id="job" class="card job" aria-live="polite">
+      <div id="job-empty" class="job__empty">
+        <img id="mascot-guide" alt="" />
+        <p class="strong" data-i18n="emptyTitle"></p>
+        <p class="muted small" data-i18n="emptyText"></p>
+      </div>
+      <div id="job-working" class="job__working" hidden>
+        <img id="mascot-loading" alt="" />
+        <p id="job-step" class="strong"></p>
+      </div>
+      <div id="job-result" hidden>
+        <p id="result-title" class="strong"></p>
+        <div class="result">
+          <img id="result-image" alt="" />
+        </div>
+        <div class="row">
+          <button id="hold" type="button" class="btn" data-i18n="holdOriginal"></button>
+          <button id="open-reader" type="button" class="btn btn--quiet" data-i18n="openReader" hidden></button>
+        </div>
+        <p id="result-meta" class="muted small"></p>
+        <ul id="result-warnings" class="warnings small"></ul>
+      </div>
+      <div id="job-error" class="job__error" hidden>
+        <p id="error-text" class="strong"></p>
+        <p id="error-detail" class="muted small"></p>
+      </div>
+      <p id="small-hint" class="hint small" hidden></p>
+    </section>
+
+    <footer class="foot">
+      <button id="open-app" type="button" class="linkish small" data-i18n="openApp"></button>
+      <p class="muted small" data-i18n="privacy"></p>
+    </footer>
+
+    <script type="module" src="sidepanel.js"></script>
+  </body>
+</html>

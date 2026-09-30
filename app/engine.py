@@ -35,8 +35,46 @@ class EngineSettings:
     box_threshold: float = 0.7
     unclip_ratio: float = 2.3
     inpainter: str = "lama_large"
-    inpainting_size: int = 1536          # 4 GB VRAM 也跑得動
+    inpainting_size: int | None = None   # None = 依顯示卡記憶體自動決定（見 auto_inpainting_size）
     mask_dilation_offset: int = 20
+
+
+def auto_inpainting_size(device: str, vram_gb: float | None) -> int:
+    """擦字尺寸決定顯示卡記憶體峰值。實測 GTX 1650（4 GB）：1536 峰值 4.3 GB、超過實體容量，
+    整台電腦會變卡；1024 峰值 2.7 GB、品質看不出差別，而且比較快。"""
+    if device != "cuda" or not vram_gb:
+        return 1024
+    if vram_gb <= 4.5:
+        return 1024
+    if vram_gb <= 8.5:
+        return 1536
+    return 2048
+
+
+def gpu_memory_gb() -> float | None:
+    import torch
+
+    if not torch.cuda.is_available():
+        return None
+    return torch.cuda.get_device_properties(0).total_memory / 2**30
+
+
+def release_gpu_memory() -> None:
+    """把 PyTorch 快取的顯示卡記憶體還給系統。
+
+    這張顯示卡通常也負責桌面與瀏覽器的畫面；翻譯完不釋放，閒置時也會一直佔著 3～4 GB，
+    其他程式只好把畫面資料搬到一般記憶體，整台電腦就會變卡。模型本身留在顯示卡上（約 1.1 GB）。
+    """
+    import gc
+
+    gc.collect()
+    try:
+        import torch
+
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+    except ImportError:
+        pass
 
 
 def _bootstrap() -> None:
@@ -76,6 +114,10 @@ class Engine:
         self.settings = settings or EngineSettings()
         _bootstrap()
         self.device = pick_device(self.settings.device)
+        if self.settings.inpainting_size is None:
+            vram = gpu_memory_gb() if self.device == "cuda" else None
+            self.settings.inpainting_size = auto_inpainting_size(self.device, vram)
+            log.info("擦字尺寸 %d（顯示卡記憶體 %s GB）", self.settings.inpainting_size, f"{vram:.1f}" if vram else "—")
 
     # ── 模型 ───────────────────────────────────────────────
     async def prepare(self, source: SourceLanguage) -> None:

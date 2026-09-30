@@ -57,7 +57,13 @@ def create_app(device: str = "auto", model: str | None = None, engine=None, ui_d
     async def prepare(e):
         await e.prepare(get_source("ja"))
 
-    worker = EngineWorker(make_engine, prepare)
+    def cleanup():
+        if engine is None:  # 測試用的假引擎不需要
+            from .engine import release_gpu_memory
+
+            release_gpu_memory()
+
+    worker = EngineWorker(make_engine, prepare, cleanup)
     state: dict = {"translator": translator, "worker": worker, "jobs": JobManager(worker, translator)}
 
     @asynccontextmanager
@@ -115,10 +121,11 @@ def create_app(device: str = "auto", model: str | None = None, engine=None, ui_d
                 Image.open(io.BytesIO(data)).convert("RGB").save(image)
                 report = await translate_image(engine, translator, image, series=s, source=source,
                                                target=target, out=out)
-                return report, out.read_bytes()
+                saved = (image.parent.name, image.stem) if s and episode else None
+                return report, out.read_bytes(), saved
 
         try:
-            report, png = await worker.run(task)
+            report, png, saved = await worker.run(task)
         except ClaudeNotInstalledError as e:
             raise HTTPException(503, str(e))
         except ClaudeNotLoggedInError as e:
@@ -133,6 +140,9 @@ def create_app(device: str = "auto", model: str | None = None, engine=None, ui_d
             "X-Yomitoki-Warnings": quote(json.dumps(report.warnings, ensure_ascii=False)),
             "X-Yomitoki-Seconds": quote(json.dumps({k: round(v, 2) for k, v in report.seconds.items()})),
         }
+        if saved:
+            # 截圖存進了哪一話的哪一頁（插件用來開閱讀器）
+            headers["X-Yomitoki-Episode"], headers["X-Yomitoki-Page"] = saved
         return Response(png, media_type="image/png", headers=headers)
 
     app.include_router(build_router(state))

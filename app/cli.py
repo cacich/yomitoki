@@ -120,6 +120,7 @@ def cmd_episode(args) -> int:
 
     series = Series.open(args.series)
     progress = lambda m: _print(f"・{m}")  # noqa: E731
+    lower_priority()
     t0 = time.perf_counter()
     engine = _engine(args) if args.step in ("ocr", "render", "run") else None
     if args.step in ("ocr", "run"):
@@ -164,11 +165,28 @@ def cmd_glossary(args) -> int:
     return 0
 
 
+def lower_priority() -> None:
+    """長時間在背景跑的指令降低 CPU 優先權：辨識文字那幾秒，前景的程式會先拿到 CPU。"""
+    if sys.platform == "win32":
+        import ctypes
+
+        BELOW_NORMAL_PRIORITY_CLASS = 0x4000
+        ctypes.windll.kernel32.SetPriorityClass(ctypes.windll.kernel32.GetCurrentProcess(), BELOW_NORMAL_PRIORITY_CLASS)
+    else:
+        try:
+            import os
+
+            os.nice(5)
+        except OSError:
+            pass
+
+
 def cmd_serve(args) -> int:
     import uvicorn
 
     from .server import create_app
 
+    lower_priority()
     uvicorn.run(create_app(device=args.device, model=args.model), host="127.0.0.1", port=args.port, log_level="info")
     return 0
 

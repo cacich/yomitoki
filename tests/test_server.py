@@ -48,9 +48,11 @@ def test_translate_png_roundtrip(client):
 
 def test_translate_saves_into_episode(client):
     s = Series.create("作品")
-    for _ in range(2):
+    for n in range(2):
         r = client.post("/translate", params={"series": "作品", "episode": "1"}, content=png_bytes(), headers=H)
         assert r.status_code == 200
+        assert r.headers["x-yomitoki-episode"] == "ep001"
+        assert r.headers["x-yomitoki-page"] == f"{n + 1:03d}"
     ep = s.episode_dir(1)
     assert sorted(p.name for p in ep.glob("*.png")) == ["001.png", "002.png"]
     assert (ep / "001.json").is_file() and (ep / "zh-TW" / "002.png").is_file()

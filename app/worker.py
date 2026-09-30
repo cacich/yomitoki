@@ -16,9 +16,11 @@ EngineTask = Callable[[object], Awaitable[T]]
 
 
 class EngineWorker:
-    def __init__(self, engine_factory: Callable[[], object], prepare: EngineTask | None = None):
+    def __init__(self, engine_factory: Callable[[], object], prepare: EngineTask | None = None,
+                 cleanup: Callable[[], None] | None = None):
         self._factory = engine_factory
         self._prepare = prepare
+        self._cleanup = cleanup  # 每件工作結束後呼叫，例如釋放顯示卡快取
         self._ready = threading.Event()
         self._error: BaseException | None = None
         self.loop: asyncio.AbstractEventLoop | None = None
@@ -43,6 +45,8 @@ class EngineWorker:
             self.engine = self._factory()
             if self._prepare:
                 self.loop.run_until_complete(self._prepare(self.engine))
+            if self._cleanup:
+                self._cleanup()
         except BaseException as e:  # noqa: BLE001 — 回報給啟動的執行緒
             self._error = e
             self._ready.set()
@@ -56,7 +60,11 @@ class EngineWorker:
 
         async def guarded():
             async with self._lock:
-                return await task(self.engine)
+                try:
+                    return await task(self.engine)
+                finally:
+                    if self._cleanup:
+                        self._cleanup()
 
         return asyncio.run_coroutine_threadsafe(guarded(), self.loop)
 

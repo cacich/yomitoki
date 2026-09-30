@@ -254,13 +254,14 @@ def mascot_loading():
     )
     body = (
         blob(200, 250, 170, 140, SAGE, 0.3)
-        + f'<g class="sway"><g filter="url(#sketch)" transform="translate(30 36) scale(0.85)">{tanuki(eyes="down")}</g></g>'
+        # 會動的圖不套抖動濾鏡：濾鏡每一格都要重算，翻譯中（顯示卡最忙的時候）會拖慢畫面
+        + f'<g class="sway"><g transform="translate(30 36) scale(0.85)">{tanuki(eyes="down")}</g></g>'
         + f'<path d="M292 40 C 342 40,372 60,372 88 C 372 114,346 130,312 132 L300 154 L292 130 C 254 126,228 110,228 88 C 228 60,254 40,292 40 Z" fill="{CREAM}" stroke="{WALNUT}" stroke-width="5" stroke-linejoin="round"/>'
         + f'<circle class="d" cx="272" cy="88" r="9" fill="{TERRA_D}"/>'
         + f'<circle class="d d2" cx="300" cy="88" r="9" fill="{TERRA_D}"/>'
         + f'<circle class="d d3" cx="328" cy="88" r="9" fill="{TERRA_D}"/>'
     )
-    return svg(400, 400, body, sketch_filter(scale=3), "翻譯中", css)
+    return svg(400, 400, body, "", "翻譯中", css)
 
 
 def mascot_error():

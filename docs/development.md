@@ -79,6 +79,15 @@ npm test             # 語系檔檢查（兩種語言的 key 一致、程式用�
 
 介面文字都放在 `ui/src/i18n/zh-TW.json` 與 `en.json`，新增文字時兩個檔案都要加。
 
+## 瀏覽器插件（extension/）
+
+Chrome Manifest V3，原生 JavaScript，不需要建置。安裝與使用方式見 [extension/README.md](../extension/README.md)。
+
+```powershell
+python scripts\build-extension.py   # 把 tokens.css 與插件圖示複製進 extension/
+node --test extension\lib.test.mjs  # 純函式的單元測試
+```
+
 整話也可以在 Claude Code 裡翻：先執行 `yomitoki episode ocr`，再輸入 `/translate-episode 作品名 1`。
 
 ## 效能參考
@@ -87,11 +96,15 @@ npm test             # 語系檔檢查（兩種語言的 key 一致、程式用�
 
 | 步驟 | 時間 |
 | --- | --- |
-| 偵測與 OCR | 約 4.7 秒 |
-| 擦字與嵌字 | 約 5.9 秒 |
-| 只改譯文後重新嵌字（沿用擦字快取） | 約 0.2 秒 |
+| 偵測與 OCR | 約 5 秒 |
+| 擦字與嵌字 | 約 2 秒 |
+| 只改譯文後重新嵌字（沿用擦字快取） | 約 0.3 秒 |
+| Claude Code 翻譯（7 個對話框） | 約 12 秒 |
 
-VRAM 峰值約 2.4 GB。翻譯時間取決於 Claude Code 的回應速度，另外計算。
+顯示卡記憶體：模型常駐約 1.1 GB，翻譯時峰值約 2.7 GB。每件工作結束後會釋放 PyTorch 的快取。
+
+擦字尺寸依顯示卡記憶體自動決定：4 GB 以下用 1024，8 GB 以下用 1536，更大的用 2048（`app/engine.py` 的 `auto_inpainting_size`）。
+4 GB 的卡用 1536 時峰值會到 4.3 GB，超過實體容量；如果這張卡同時負責桌面顯示，整台電腦都會變卡。
 
 ## 測試
 
