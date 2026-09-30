@@ -1,0 +1,122 @@
+/*
+ * Yomitoki 設計 token
+ * 風格：溫暖手繪 × 日系編輯排版
+ *
+ * 規則：
+ * - 元件只使用這裡的變數，不直接寫色碼。
+ * - 所有「文字 × 底色」組合都要通過 WCAG AA（4.5:1），由
+ *   scripts/check-contrast.py 與 tests/test_contrast.py 驗證。
+ * - 淺陶土橘（--color-terracotta）只用於大面積裝飾，不作文字底色。
+ */
+
+:root {
+  /* ── 原始色票 ─────────────────────────────── */
+  --color-oat: #f7f0e4;          /* 燕麥米：頁面背景 */
+  --color-cream: #fffbf4;        /* 奶油白：卡片紙面 */
+  --color-terracotta: #d98b6a;   /* 陶土橘：主色（裝飾） */
+  --color-terracotta-deep: #a8573b; /* 深陶土：主要按鈕。原稿 #B5603F 配淺字僅 4.32:1，調深至 4.98:1 */
+  --color-sage: #9db08a;         /* 鼠尾草綠：輔色 */
+  --color-butter: #f2cf7e;       /* 奶油黃：點綴 */
+  --color-rose: #e8b4a8;         /* 霧玫瑰：點綴 */
+  --color-cocoa: #4a3b32;        /* 可可棕：主要文字 */
+  --color-taupe: #766659;        /* 灰褐：次要文字。原稿 #8C7B6E 在燕麥米上僅 3.58:1，調深至 4.86:1 */
+  --color-taupe-soft: #8c7b6e;   /* 灰褐（原稿）：只用於非文字的圖示、分隔線 */
+  --color-walnut: #6b5a4e;       /* 胡桃棕：手繪線條 */
+
+  /* ── 語意色 ──────────────────────────────── */
+  --bg-page: var(--color-oat);
+  --bg-card: var(--color-cream);
+  --bg-accent: var(--color-terracotta);
+  --bg-tag-sage: var(--color-sage);
+  --bg-tag-butter: var(--color-butter);
+  --bg-tag-rose: var(--color-rose);
+
+  --text-primary: var(--color-cocoa);
+  --text-secondary: var(--color-taupe);
+  --text-on-primary: var(--color-cream);
+  --text-on-tag: var(--color-cocoa);      /* 鼠尾草綠、奶油黃、霧玫瑰標籤上的文字 */
+
+  --button-primary-bg: var(--color-terracotta-deep);
+  --button-primary-text: var(--text-on-primary);
+
+  --line-sketch: var(--color-walnut);
+  --line-divider: var(--color-taupe-soft);
+  --focus-ring: var(--color-terracotta-deep);
+
+  /* ── 字體 ────────────────────────────────── */
+  --font-zh: "jf-openhuninn", "jf open 粉圓", "Microsoft JhengHei", "PingFang TC", sans-serif;
+  --font-display: "Fraunces", "jf-openhuninn", Georgia, serif;
+  --font-body: "Nunito", "jf-openhuninn", "Microsoft JhengHei", sans-serif;
+  --font-hand: "Caveat", "Comic Sans MS", cursive; /* 只用於英文小註記與貼紙文字 */
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.75rem;
+  --text-display: 2.75rem;
+  --leading-body: 1.65;
+  --leading-tight: 1.2;
+
+  /* ── 形狀 ────────────────────────────────── */
+  --radius-card: 20px;           /* 卡片圓角 16–24 px */
+  --radius-card-sm: 16px;
+  --radius-card-lg: 24px;
+  --radius-pill: 999px;
+  --sketch-stroke: 2px;          /* rough.js 手繪輪廓線寬 */
+  --sketch-roughness: 1.2;
+
+  /* ── 陰影（偏暖、偏淡） ───────────────────── */
+  --shadow-soft: 0 2px 6px rgb(107 90 78 / 0.10), 0 8px 24px rgb(107 90 78 / 0.08);
+  --shadow-lifted: 0 4px 10px rgb(107 90 78 / 0.14), 0 16px 36px rgb(107 90 78 / 0.10);
+
+  /* ── 間距 ────────────────────────────────── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 72px;
+
+  /* ── 動態（上限 300 ms） ──────────────────── */
+  --motion-fast: 150ms;
+  --motion-base: 220ms;
+  --motion-slow: 300ms;
+  --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+
+  /* ── 紙張質感 ─────────────────────────────── */
+  --paper-texture-opacity: 0.35;
+}
+
+/* 夜讀模式：深可可為底，其他色票降低明度 */
+:root[data-theme="night"] {
+  --color-oat: #2e2621;
+  --color-cream: #3a302a;
+  --color-terracotta: #b8775b;
+  --color-terracotta-deep: #e09a7a;
+  --color-sage: #8fa17d;
+  --color-butter: #c9ab69;
+  --color-rose: #c2968b;
+  --color-cocoa: #f2e8da;
+  --color-taupe: #c9b8a8;
+  --color-taupe-soft: #8c7b6e;
+  --color-walnut: #a8968a;
+
+  --text-on-primary: #2e2621;
+  --text-on-tag: #2e2621;
+
+  --shadow-soft: 0 2px 6px rgb(0 0 0 / 0.25), 0 8px 24px rgb(0 0 0 / 0.20);
+  --shadow-lifted: 0 4px 10px rgb(0 0 0 / 0.30), 0 16px 36px rgb(0 0 0 / 0.25);
+  --paper-texture-opacity: 0.12;
+}
+
+/* 尊重系統「減少動態效果」設定 */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 0ms;
+    --motion-base: 0ms;
+    --motion-slow: 0ms;
+  }
+}

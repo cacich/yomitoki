@@ -10,7 +10,7 @@
 
 Yomitoki is a personal, multilingual manga reading tool. It runs OCR, translation and typesetting on screenshots **you take yourself**, then lets you read the result in a local, hand-drawn-style reader.
 
-> **Status: pre-alpha.** M1 (skeleton and brand), M2 (translation core), M3 (UI: shelf, series page, reader, glossary, settings) and M4 (Chrome extension, see [extension/README.md](extension/README.md)) are done. The installer is not implemented yet.
+> **Status: pre-alpha.** M1 (skeleton and brand), M2 (translation core), M3 (UI), M4 (Chrome extension, see [extension/README.md](extension/README.md)) and M5 (installer and first-run wizard) are done. Next is the M6 v0.1 release.
 
 ## Usage notice
 
@@ -37,7 +37,7 @@ Each series keeps its own memory: a glossary, style rules and a plot summary. Ch
 | v0.2 | Vertical-scroll (webtoon) mode, Korean → Traditional Chinese, re-apply glossary without re-running OCR |
 | v0.3 | English and Chinese sources; English, Japanese and Korean targets; English UI |
 
-Development milestones: M1 skeleton and brand ✅ · M2 translation core ✅ · M3 UI ✅ · M4 browser extension ✅ · M5 installer · M6 v0.1 release.
+Development milestones: M1 skeleton and brand ✅ · M2 translation core ✅ · M3 UI ✅ · M4 browser extension ✅ · M5 installer ✅ · M6 v0.1 release.
 
 ## Customizing the look
 
@@ -53,23 +53,25 @@ To rebuild every icon size from a new source image:
 python scripts/build-icons.py --source path/to/my-icon.png
 ```
 
-## Trying the translation core
+## Installing
 
-There is no installer yet (planned for M5). Set up the development environment by following [docs/development.md](docs/development.md). Then:
+You need Windows 10 / 11 (64-bit) and [Claude Code](https://docs.claude.com/en/docs/claude-code/overview). An NVIDIA graphics card is recommended; without one Yomitoki still works, just more slowly.
+
+1. Run `Yomitoki-Setup-<version>.exe`. No administrator rights are needed; it installs to `%LOCALAPPDATA%\Yomitoki` by default.
+2. Open Yomitoki. The first-run wizard checks your computer, downloads the components and models (about 3–5 GB), connects Claude Code, walks you through the browser extension, creates your first series and translates a sample page.
+3. Afterwards, open it from the Start menu or the desktop shortcut. Closing the window only minimizes it to the tray; choose "Quit Yomitoki" in the tray to stop it.
+
+How the installer works and how to build it: [installer/README.md](installer/README.md).
+
+## Command line
+
+In a development environment ([docs/development.md](docs/development.md)) you can also use the command line:
 
 ```bash
-yomitoki setup
-yomitoki translate tests/fixtures/ja-page-01.png -o out.png
-```
-
-For a whole episode with per-series memory:
-
-```bash
+yomitoki translate page.png -o translated.png
 yomitoki series new "My Series"
 yomitoki episode run "My Series" 1
 ```
-
-Or run `yomitoki serve` and open http://127.0.0.1:8765 to use the UI (build it first with `npm run build` in `ui/`).
 
 ## Development
 

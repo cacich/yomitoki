@@ -1,12 +1,13 @@
 # ── 使用者資料：絕對不可進入公開 repo ─────────────────────────
+# 只比對 repo 根目錄（開頭的 /），以免誤擋 assets/samples/ 這類程式自己的資料夾
 # 作品資料夾（詞彙表、劇情摘要、截圖、譯圖）
-series/
+/series/
 # 個人測試用截圖
-samples/
+/samples/
 # 翻譯輸出
-output/
+/output/
 # 使用者自訂素材（正常情況放在 文件\Yomitoki\custom-assets，這裡是保險）
-custom-assets/
+/custom-assets/
 
 # ── 模型檔 ───────────────────────────────────────────────
 *.pth

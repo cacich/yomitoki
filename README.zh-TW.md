@@ -10,7 +10,7 @@
 
 Yomitoki 是個人用的多語言漫畫截圖翻譯閱讀工具：對**你自己截下的畫面**做 OCR、翻譯與嵌字，再用本機的手繪風閱讀器閱讀。
 
-> **目前狀態：pre-alpha。** 已完成 M1（骨架與品牌）、M2（翻譯核心）、M3（介面：書架、作品頁、閱讀器、詞彙表、設定）與 M4（Chrome 插件，見 [extension/README.md](extension/README.md)），安裝檔尚未實作。
+> **目前狀態：pre-alpha。** 已完成 M1（骨架與品牌）、M2（翻譯核心）、M3（介面）、M4（Chrome 插件，見 [extension/README.md](extension/README.md)）與 M5（安裝檔與首次啟動精靈），接下來是 M6 v0.1 發佈。
 
 ## 使用聲明
 
@@ -37,7 +37,7 @@ Yomitoki 是個人用的多語言漫畫截圖翻譯閱讀工具：對**你自己
 | v0.2 | 條漫模式、韓文 → 繁中、修改詞彙表後只重做嵌字 |
 | v0.3 | 英文、中文來源；英文、日文、韓文目標；介面英文版 |
 
-開發里程碑：M1 骨架與品牌 ✅ · M2 翻譯核心 ✅ · M3 介面 ✅ · M4 瀏覽器插件 ✅ · M5 安裝 · M6 v0.1 發佈。
+開發里程碑：M1 骨架與品牌 ✅ · M2 翻譯核心 ✅ · M3 介面 ✅ · M4 瀏覽器插件 ✅ · M5 安裝 ✅ · M6 v0.1 發佈。
 
 ## 自訂外觀
 
@@ -53,23 +53,25 @@ Yomitoki 是個人用的多語言漫畫截圖翻譯閱讀工具：對**你自己
 python scripts/build-icons.py --source path/to/my-icon.png
 ```
 
-## 試用翻譯核心
+## 安裝
 
-安裝檔要到 M5 才會完成，目前請先依照 [docs/development.md](docs/development.md) 建立開發環境，然後：
+需要 Windows 10 / 11（64 位元）與 [Claude Code](https://docs.claude.com/en/docs/claude-code/overview)。建議有 NVIDIA 顯示卡；沒有也能用，只是比較慢。
+
+1. 執行 `Yomitoki-Setup-<版本>.exe`（不需要系統管理員權限，預設裝到 `%LOCALAPPDATA%\Yomitoki`）。
+2. 打開 Yomitoki，首次啟動精靈會帶你：檢查電腦、下載元件與模型（約 3～5 GB）、連接 Claude Code、安裝瀏覽器插件、建立第一部作品、試翻一張。
+3. 之後從開始功能表或桌面捷徑打開。關閉視窗只會縮到系統匣；從系統匣選「結束 Yomitoki」才會完全關掉。
+
+安裝檔怎麼運作、怎麼自己建置，見 [installer/README.md](installer/README.md)。
+
+## 命令列
+
+在開發環境裡（見 [docs/development.md](docs/development.md)）也可以直接用命令列：
 
 ```bash
-yomitoki setup
-yomitoki translate tests/fixtures/ja-page-01.png -o out.png
-```
-
-整話翻譯（帶入作品記憶）：
-
-```bash
+yomitoki translate 截圖.png -o 譯圖.png
 yomitoki series new "作品名"
 yomitoki episode run "作品名" 1
 ```
-
-或執行 `yomitoki serve` 後打開 http://127.0.0.1:8765 使用介面（先在 `ui/` 執行 `npm run build`）。
 
 ## 開發
 

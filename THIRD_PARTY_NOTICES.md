@@ -11,9 +11,15 @@ Re-check them before bundling a new version.
 | [OpenCC](https://github.com/BYVoid/OpenCC) | Taiwan Traditional Chinese normalization (`s2twp`) | Apache-2.0 | Installed as a dependency |
 | [FastAPI](https://github.com/fastapi/fastapi) | Local backend | MIT | Installed as a dependency |
 | [truststore](https://github.com/sethmlarson/truststore) | Uses the Windows certificate store for downloads | MIT | Installed as a dependency |
-| [pydensecrf2](https://pypi.org/project/pydensecrf2/) | Mask refinement, required by manga-image-translator | MIT | Installed as a dependency |
-| [pywebview](https://github.com/r0x0r/pywebview) | Desktop window | BSD-3-Clause | Planned (M5) |
-| [uv](https://github.com/astral-sh/uv) | Python environment manager used by the installer | Apache-2.0 | Planned (M5) |
+| [pydensecrf2](https://pypi.org/project/pydensecrf2/) 1.1 | Mask refinement, required by manga-image-translator. A prebuilt Windows wheel is in `installer/wheels/` (PyPI only ships source) | MIT | Bundled wheel |
+| [pywebview](https://github.com/r0x0r/pywebview) 6.2.1 | Desktop window and first-run wizard | BSD-3-Clause | Downloaded at install |
+| [pythonnet](https://github.com/pythonnet/pythonnet) 3.2.0 / [clr-loader](https://github.com/pythonnet/clr-loader) | Used by pywebview on Windows | MIT | Downloaded at install |
+| [bottle](https://github.com/bottlepy/bottle), [proxy-tools](https://pypi.org/project/proxy-tools/) | Used by pywebview | MIT | Downloaded at install |
+| [pystray](https://github.com/moses-palmer/pystray) 0.19.5 | System tray icon | LGPL-3.0 | Downloaded at install |
+| [uv](https://github.com/astral-sh/uv) 0.12.21 | Python environment manager; `uv.exe` is bundled in the installer | MIT OR Apache-2.0 | Bundled |
+| [CPython](https://www.python.org/) 3.11.16 | Runtime, downloaded by uv from [python-build-standalone](https://github.com/astral-sh/python-build-standalone) | PSF-2.0 | Downloaded at install |
+| [PyTorch](https://pytorch.org/) 2.14.0 | Inference (CUDA 12.6 or CPU build) | BSD-3-Clause | Downloaded at install |
+| [Inno Setup](https://jrsoftware.org/isinfo.php) | Builds the installer (not redistributed; its translation file `installer/ChineseTraditional.isl` is) | Inno Setup License | Build tool |
 | [rough.js](https://github.com/rough-stuff/rough) | Hand-drawn UI outlines | MIT | Planned (M3) |
 | [Pillow](https://github.com/python-pillow/Pillow) | Icon build script | MIT-CMU (HPND) | Dev only |
 | [resvg-py](https://github.com/baseplate-admin/resvg-py) | SVG rasterization in the icon build script | MIT | Dev only |

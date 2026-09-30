@@ -79,12 +79,21 @@ npm test             # 語系檔檢查（兩種語言的 key 一致、程式用�
 
 介面文字都放在 `ui/src/i18n/zh-TW.json` 與 `en.json`，新增文字時兩個檔案都要加。
 
+## 安裝檔與啟動器（installer/、app/launcher/）
+
+見 [installer/README.md](../installer/README.md)。開發時可以直接從 repo 執行啟動器，用現有的開發環境當執行環境，略過精靈的下載步驟：
+
+```powershell
+$env:YOMITOKI_RUNTIME_PYTHON = "$PWD\.venv\Scripts\python.exe"
+.venv\Scripts\python -m app.launcher      # 需要先在開發環境裝 pywebview 與 pystray
+```
+
 ## 瀏覽器插件（extension/）
 
 Chrome Manifest V3，原生 JavaScript，不需要建置。安裝與使用方式見 [extension/README.md](../extension/README.md)。
 
 ```powershell
-python scripts\build-extension.py   # 把 tokens.css 與插件圖示複製進 extension/
+python scripts\sync-shared.py   # 把 tokens.css 與插件圖示複製進 extension/
 node --test extension\lib.test.mjs  # 純函式的單元測試
 ```
 

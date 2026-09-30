@@ -32,6 +32,6 @@
 ## 開發
 
 - 程式是原生 JavaScript（ES modules），不需要建置。
-- `tokens.css` 與 `icons/` 是從 `ui/` 和 `assets/` 複製來的；改過設計 token 或圖示後，執行 `python scripts/build-extension.py`。
+- `tokens.css` 與 `icons/` 是從 `ui/` 和 `assets/` 複製來的；改過設計 token 或圖示後，執行 `python scripts/sync-shared.py`。
 - 測試：`node --test extension/lib.test.mjs`，以及 `pytest tests/test_extension.py`（檢查權限、使用界線、語系檔與同步的檔案）。
 - 改了程式之後，到 `chrome://extensions` 按 Yomitoki 卡片上的重新整理圖示。

@@ -73,7 +73,7 @@ def test_every_message_key_exists():
 
 def test_copied_files_are_in_sync():
     assert (EXT / "tokens.css").read_bytes() == (ROOT / "ui" / "src" / "styles" / "tokens.css").read_bytes(), \
-        "tokens.css 不同步：請執行 python scripts/build-extension.py"
+        "tokens.css 不同步：請執行 python scripts/sync-shared.py"
     for s in (16, 32, 48, 128):
         src = ROOT / "assets" / "icons" / "extension" / f"icon-{s}.png"
         assert (EXT / "icons" / f"icon-{s}.png").read_bytes() == src.read_bytes(), f"icon-{s}.png 不同步"

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Yomitoki</title>
+    <link rel="stylesheet" href="tokens.css" />
+    <style>
+      html, body { margin: 0; height: 100%; }
+      body { background: var(--bg-page); color: var(--text-primary); font-family: var(--font-zh); display: grid; place-items: center; }
+      .box { text-align: center; display: grid; gap: var(--space-3); justify-items: center; padding: var(--space-5); }
+      .spinner { width: 56px; height: 56px; border-radius: 50%; border: 5px solid var(--color-sage); border-top-color: var(--color-terracotta-deep); animation: spin 1s linear infinite; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
+      .error { color: var(--color-terracotta-deep); font-weight: 700; max-width: 40ch; }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <div class="spinner" id="spinner" aria-hidden="true"></div>
+      <p id="msg">正在啟動 Yomitoki… 第一次載入模型約需 20～40 秒。</p>
+      <p class="error" id="error" hidden></p>
+    </div>
+    <script>
+      if (!navigator.language.toLowerCase().startsWith("zh")) {
+        document.getElementById("msg").textContent = "Starting Yomitoki… loading the models takes 20–40 seconds.";
+      }
+      window.showError = (text) => {
+        document.getElementById("spinner").hidden = true;
+        const el = document.getElementById("error");
+        el.hidden = false;
+        el.textContent = text;
+      };
+    </script>
+  </body>
+</html>

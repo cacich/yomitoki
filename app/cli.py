@@ -52,8 +52,9 @@ def cmd_setup(args) -> int:
     main, fallbacks = fonts.ensure_for_target(tgt)
     _print(f"字型：{main.name}（備援 {', '.join(p.name for p in fallbacks)}）")
     exe = ClaudeCodeTranslator().executable
-    _print(f"Claude Code：{exe or '找不到，請先安裝'}")
-    return 0 if exe else 1
+    # 只提醒、不算失敗：首次啟動精靈有獨立的「連接 Claude Code」步驟
+    _print(f"Claude Code：{exe or '找不到，翻譯前請先安裝'}")
+    return 0
 
 
 def cmd_translate(args) -> int:

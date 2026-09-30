@@ -1,4 +1,4 @@
-/* 側邊面板：沿用 Yomitoki 的設計 token（tokens.css 由 scripts/build-extension.py 從 ui/ 複製過來） */
+/* 側邊面板：沿用 Yomitoki 的設計 token（tokens.css 由 scripts/sync-shared.py 從 ui/ 複製過來） */
 
 @font-face {
   font-family: "jf-openhuninn";

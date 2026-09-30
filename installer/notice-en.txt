@@ -1,0 +1,17 @@
+Yomitoki
+A personal, multilingual manga screenshot translation reader
+
+Usage notice
+- Yomitoki is for personal reading and comprehension only.
+- You are responsible for following the terms of service of any site you read on, and the copyright law where you live.
+- Do not distribute translated output. Keep it on your own computer.
+- Yomitoki only processes screenshots you capture yourself. It never downloads, intercepts or reconstructs images from websites.
+
+After installing
+- The first-run wizard downloads the translation components and models (about 3-5 GB, internet required).
+- Translation runs through your own signed-in Claude Code and uses your Claude subscription.
+- Screenshots never leave your computer; only the recognized text is sent to Claude Code.
+
+License
+- Code: GPL-3.0. Default artwork and icons: CC BY 4.0.
+- Third-party components and fonts: see program\THIRD_PARTY_NOTICES.md in the install folder.

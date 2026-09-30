@@ -6,3 +6,4 @@
 *.png binary
 *.ico binary
 *.webp binary
+*.isl text eol=crlf

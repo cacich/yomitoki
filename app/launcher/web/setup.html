@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yomitoki</title>
+    <link rel="stylesheet" href="tokens.css" />
+    <link rel="stylesheet" href="setup.css" />
+  </head>
+  <body>
+    <ol class="dots" id="dots" aria-hidden="true"></ol>
+
+    <main class="stage">
+      <figure class="mascot"><img id="mascot" alt="" /></figure>
+
+      <section class="panel" id="panel" aria-live="polite">
+        <!-- 0 歡迎 -->
+        <div class="step" data-step="welcome">
+          <p class="eyebrow" data-t="welcome.eyebrow"></p>
+          <h1 data-t="welcome.title"></h1>
+          <p class="lead" data-t="welcome.lead"></p>
+          <ul class="checklist">
+            <li data-t="welcome.item1"></li>
+            <li data-t="welcome.item2"></li>
+            <li data-t="welcome.item3"></li>
+          </ul>
+          <p class="muted small" data-t="welcome.notice"></p>
+          <div class="actions"><button class="btn btn--primary" data-go="env" data-t="welcome.start"></button></div>
+        </div>
+
+        <!-- 1 環境檢查 -->
+        <div class="step" data-step="env" hidden>
+          <h1 data-t="env.title"></h1>
+          <ul class="status-list">
+            <li><span class="dot" id="env-gpu-dot"></span><div><p class="strong" data-t="env.gpu"></p><p id="env-gpu" class="muted"></p></div></li>
+            <li><span class="dot" id="env-disk-dot"></span><div><p class="strong" data-t="env.disk"></p><p id="env-disk" class="muted"></p></div></li>
+          </ul>
+          <p id="env-cpu-note" class="note" data-t="env.cpuNote" hidden></p>
+          <div class="actions">
+            <button class="btn btn--quiet" data-go="welcome" data-t="common.back"></button>
+            <button class="btn btn--primary" id="env-next" data-t="common.next" disabled></button>
+          </div>
+        </div>
+
+        <!-- 2 下載元件 -->
+        <div class="step" data-step="download" hidden>
+          <h1 data-t="download.title"></h1>
+          <p class="lead" id="download-lead" data-t="download.lead"></p>
+          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" id="download-bar">
+            <div class="progress__fill" id="download-fill"></div>
+          </div>
+          <p class="strong" id="download-step"></p>
+          <p class="muted small mono" id="download-detail"></p>
+          <div id="download-error" class="note note--error" hidden>
+            <p class="strong" data-t="download.failed"></p>
+            <p class="small mono" id="download-error-text"></p>
+          </div>
+          <div class="actions">
+            <button class="btn btn--quiet" id="download-logs" data-t="download.logs"></button>
+            <button class="btn btn--primary" id="download-start" data-t="download.start"></button>
+          </div>
+        </div>
+
+        <!-- 3 Claude Code -->
+        <div class="step" data-step="claude" hidden>
+          <h1 data-t="claude.title"></h1>
+          <p class="lead" data-t="claude.lead"></p>
+          <div class="status-card" id="claude-card">
+            <span class="dot" id="claude-dot"></span>
+            <div><p class="strong" id="claude-status"></p><p class="muted small" id="claude-hint"></p></div>
+          </div>
+          <div class="row" id="claude-actions"></div>
+          <div class="actions">
+            <button class="btn btn--quiet" id="claude-skip" data-t="common.skip"></button>
+            <button class="btn btn--primary" id="claude-next" data-t="common.next" disabled></button>
+          </div>
+        </div>
+
+        <!-- 4 瀏覽器插件 -->
+        <div class="step" data-step="extension" hidden>
+          <h1 data-t="extension.title"></h1>
+          <p class="lead" data-t="extension.lead"></p>
+          <ol class="howto">
+            <li><span data-t="extension.step1"></span> <button class="btn btn--small" id="ext-open" data-t="extension.openPage"></button></li>
+            <li data-t="extension.step2"></li>
+            <li><span data-t="extension.step3"></span>
+              <code class="path" id="ext-path"></code>
+              <button class="btn btn--small" id="ext-copy" data-t="extension.copy"></button>
+              <button class="btn btn--small btn--quiet" id="ext-folder" data-t="extension.openFolder"></button>
+            </li>
+            <li data-t="extension.step4"></li>
+          </ol>
+          <p class="muted small" id="ext-msg"></p>
+          <div class="actions">
+            <button class="btn btn--quiet" data-go="series" data-t="common.skip"></button>
+            <button class="btn btn--primary" data-go="series" data-t="extension.done"></button>
+          </div>
+        </div>
+
+        <!-- 5 第一部作品 -->
+        <div class="step" data-step="series" hidden>
+          <h1 data-t="series.title"></h1>
+          <p class="lead" data-t="series.lead"></p>
+          <form id="series-form" class="form">
+            <label class="field"><span data-t="series.name"></span><input id="series-name" class="input" required maxlength="120" /></label>
+            <label class="field"><span data-t="series.format"></span>
+              <select id="series-format" class="input"><option value="page" data-t="series.formatPage"></option></select>
+            </label>
+            <div class="row">
+              <label class="field"><span data-t="series.source"></span><select id="series-source" class="input"></select></label>
+              <label class="field"><span data-t="series.target"></span><select id="series-target" class="input"></select></label>
+            </div>
+            <p class="error small" id="series-error"></p>
+            <div class="actions">
+              <button type="button" class="btn btn--quiet" data-go="trial" data-t="common.skip"></button>
+              <button type="submit" class="btn btn--primary" data-t="series.create"></button>
+            </div>
+          </form>
+        </div>
+
+        <!-- 6 試翻一張 -->
+        <div class="step" data-step="trial" hidden>
+          <h1 data-t="trial.title"></h1>
+          <p class="lead" data-t="trial.lead"></p>
+          <div class="compare" id="trial-compare" hidden>
+            <figure><img id="trial-original" alt="" /><figcaption data-t="trial.original"></figcaption></figure>
+            <figure><img id="trial-result" alt="" /><figcaption data-t="trial.result"></figcaption></figure>
+          </div>
+          <p class="strong" id="trial-status"></p>
+          <p class="error small" id="trial-error"></p>
+          <div class="actions">
+            <button class="btn btn--quiet" id="trial-skip" data-t="common.skip"></button>
+            <button class="btn" id="trial-run" data-t="trial.run"></button>
+            <button class="btn btn--primary" id="trial-finish" data-t="trial.finish" hidden></button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="setup.js"></script>
+  </body>
+</html>
