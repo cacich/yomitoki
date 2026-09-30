@@ -14,8 +14,6 @@ if "%ROOT%"=="" exit /b 2
 set "UV=%ROOT%\bin\uv.exe"
 set "UV_PYTHON_INSTALL_DIR=%ROOT%\python"
 set "UV_CACHE_DIR=%ROOT%\cache\uv"
-rem Testing only: some sandboxes cannot traverse the junctions uv creates in its own cache.
-if defined YOMITOKI_UV_CACHE_DIR set "UV_CACHE_DIR=%YOMITOKI_UV_CACHE_DIR%"
 rem Corporate networks often intercept HTTPS with their own CA: use the Windows store.
 set "UV_SYSTEM_CERTS=1"
 set "UV_LINK_MODE=copy"
@@ -37,9 +35,10 @@ if not defined PYEXE (
 
 "%UV%" venv --python "%PYEXE%" --allow-existing "%ROOT%\env\launcher" >> "%LOG%" 2>&1 || exit /b 12
 
-rem uv points the venv at the minor-version junction (cpython-3.11-...). Some security
-rem policies refuse to traverse junctions ("untrusted mount point", os error 448),
-rem so point it at the real versioned folder instead.
+rem uv points the venv at the minor-version junction (cpython-3.11-...). Processes with
+rem RedirectionGuard enabled refuse to traverse junctions ("untrusted mount point",
+rem os error 448), so point it at the real versioned folder instead. The installer turns
+rem RedirectionGuard off (see yomitoki.iss); this keeps the venv working either way.
 for %%F in ("%PYEXE%") do set "PYDIR=%%~dpF"
 set "PYDIR=%PYDIR:~0,-1%"
 set "CFG=%ROOT%\env\launcher\pyvenv.cfg"

@@ -149,6 +149,8 @@ def test_installer_script_references_exist():
     code = text.split("[Code]", 1)[1]
     assert not re.search(r"^\s+\[", code, re.M)
     assert "PrivilegesRequired=lowest" in text and r"{localappdata}\Yomitoki" in text
+    # Inno Setup 6.5 起預設開 RedirectionGuard，子程序繼承後 uv 無法穿過 junction（os error 448）
+    assert re.search(r"^RedirectionGuard=no\s*$", text, re.M)
     cmd = (ROOT / "installer" / "bootstrap-launcher.cmd").read_bytes()
     assert cmd.isascii(), "bootstrap-launcher.cmd 只能用 ASCII（cmd.exe 以 OEM 編碼讀批次檔）"
     assert b"\r\n" in cmd and b"\n" not in cmd.replace(b"\r\n", b""), "批次檔要用 CRLF"

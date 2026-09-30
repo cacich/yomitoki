@@ -12,6 +12,20 @@ Yomitoki is a personal, multilingual manga reading tool. It runs OCR, translatio
 
 > **Status: pre-alpha.** M1 (skeleton and brand), M2 (translation core), M3 (UI), M4 (Chrome extension, see [extension/README.md](extension/README.md)) and M5 (installer and first-run wizard) are done. Next is the M6 v0.1 release.
 
+<p align="center">
+  <img src="docs/screenshots/before-after.png" alt="Left: an original Japanese sample page. Right: Yomitoki's output with the Japanese removed and Traditional Chinese typeset vertically" width="760">
+</p>
+
+## Screenshots
+
+All screenshots use original sample pages and artwork.
+
+| Shelf | Series page |
+| --- | --- |
+| <img src="docs/screenshots/shelf.png" alt="Shelf: magazine-cover heading and series cards" width="400"> | <img src="docs/screenshots/series.png" alt="Series page: series info on the left, episodes with hand-drawn progress bars on the right" width="400"> |
+| **Reader** | **Glossary & rules** |
+| <img src="docs/screenshots/reader.png" alt="Reader: the page centered, toolbar in the top-right corner" width="400"> | <img src="docs/screenshots/glossary.png" alt="Glossary: notebook-style term list and tone rules" width="400"> |
+
 ## Usage notice
 
 Yomitoki is for **personal reading and comprehension only**.
@@ -20,7 +34,7 @@ Yomitoki is for **personal reading and comprehension only**.
 - **Do not distribute translated output.** Keep it on your own computer.
 - Yomitoki only processes screenshots you capture yourself. It does not download, intercept or reconstruct images from websites. It contains no code that targets any particular site.
 
-## How it will work
+## How it works
 
 1. Press a hotkey in the browser extension to capture what is on screen.
 2. The local backend (bound to `127.0.0.1` only) detects speech bubbles and runs OCR.
@@ -57,7 +71,7 @@ python scripts/build-icons.py --source path/to/my-icon.png
 
 You need Windows 10 / 11 (64-bit) and [Claude Code](https://docs.claude.com/en/docs/claude-code/overview). An NVIDIA graphics card is recommended; without one Yomitoki still works, just more slowly.
 
-1. Run `Yomitoki-Setup-<version>.exe`. No administrator rights are needed; it installs to `%LOCALAPPDATA%\Yomitoki` by default.
+1. Download `Yomitoki-Setup-<version>.exe` from the [Releases page](https://github.com/cacich/yomitoki/releases) and run it. No administrator rights are needed; it installs to `%LOCALAPPDATA%\Yomitoki` by default.
 2. Open Yomitoki. The first-run wizard checks your computer, downloads the components and models (about 3–5 GB), connects Claude Code, walks you through the browser extension, creates your first series and translates a sample page.
 3. Afterwards, open it from the Start menu or the desktop shortcut. Closing the window only minimizes it to the tray; choose "Quit Yomitoki" in the tray to stop it.
 

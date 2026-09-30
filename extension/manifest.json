@@ -3,7 +3,7 @@
   "name": "__MSG_extName__",
   "short_name": "Yomitoki",
   "description": "__MSG_extDescription__",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "default_locale": "zh_TW",
   "minimum_chrome_version": "116",
   "icons": {

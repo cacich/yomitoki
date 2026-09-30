@@ -1,11 +1,11 @@
 ﻿; Yomitoki 安裝檔（Inno Setup 6）。由 installer/build.py 準備好 stage\ 之後編譯：
-;   ISCC.exe /DAppVersion=0.0.1 installer\yomitoki.iss
+;   ISCC.exe /DAppVersion=0.1.0 installer\yomitoki.iss
 ;
 ; 安裝檔只放程式本身與 uv；Python、翻譯核心與模型在安裝後下載，讓安裝檔保持輕量。
 ; 預設裝在 %LOCALAPPDATA%\Yomitoki，不需要系統管理員權限。
 
 #ifndef AppVersion
-  #define AppVersion "0.0.1"
+  #define AppVersion "0.1.0"
 #endif
 #define Stage "build\stage"
 
@@ -34,6 +34,10 @@ Compression=lzma2/max
 SolidCompression=yes
 ; 自己用 PID 檔結束 Yomitoki，不讓 Restart Manager 去關其他 Python 程式
 CloseApplications=no
+; Inno Setup 6.5 起預設開啟 Windows 的 RedirectionGuard，子程序也會繼承：它不讓程序穿過一般使用者建立的
+; junction。uv 管理 Python 需要 junction（os error 448）。這個防護是為了避免「以系統管理員安裝」時被
+; 導向攻擊提權；Yomitoki 只裝在使用者自己的資料夾、不要求系統管理員權限，關掉不影響安全性。
+RedirectionGuard=no
 AllowNoIcons=yes
 
 [Languages]

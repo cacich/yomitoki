@@ -28,7 +28,7 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, JSONResponse, Response
 from PIL import Image, UnidentifiedImageError
 
-from . import paths
+from . import __version__, paths
 from .api import build_router, mount_fonts
 from .jobs import JobManager
 from .languages import get_source, get_target
@@ -73,7 +73,7 @@ def create_app(device: str = "auto", model: str | None = None, engine=None, ui_d
         yield
         worker.stop()
 
-    app = FastAPI(title="Yomitoki", version="0.0.1", lifespan=lifespan)
+    app = FastAPI(title="Yomitoki", version=__version__, lifespan=lifespan)
     app.state.yomitoki = state
 
     @app.middleware("http")

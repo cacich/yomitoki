@@ -57,7 +57,9 @@ python installer\make-locks.py
 
 ## 踩過的坑
 
-- **junction**：uv 讓環境指向 Python 的「次版本」junction（`cpython-3.11-…`）。有些安全政策不允許穿過 junction（os error 448），所以安裝後把 `pyvenv.cfg` 改成指向實際的資料夾。
+- **RedirectionGuard**：Inno Setup 6.5 起，Setup 與 Uninstall 預設開啟 Windows 的 RedirectionGuard，而且子程序會繼承。它不讓程序穿過一般使用者建立的 junction，但 uv 管理 Python 需要 junction，結果會出現 os error 448（路徑包含不受信任的掛接點）。
+  - 這個防護是為了避免「以系統管理員安裝」時被導向攻擊提權。Yomitoki 只裝在使用者自己的資料夾、不要求系統管理員權限，所以在 `yomitoki.iss` 設 `RedirectionGuard=no`。
+  - 保險起見，安裝後也把 `pyvenv.cfg` 改成直接指向實際的 Python 資料夾，不經過 uv 的「次版本」junction（`cpython-3.11-…`）。
 - **`.pth` 的編碼**：Python 3.11 以系統地區編碼（例如 cp950）讀 `.pth`。路徑有中文時要用同一種編碼寫；系統編碼表示不了的字，改用 8.3 短路徑。
 - **批次檔**：`bootstrap-launcher.cmd` 只用 ASCII 並存成 CRLF（cmd.exe 以 OEM 編碼讀批次檔）。
 - **`.iss`**：要存成 UTF-8 BOM 才能顯示中文；`[Code]` 裡也不能有以 `[` 開頭的行（會被當成區段標題）。

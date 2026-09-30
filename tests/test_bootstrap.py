@@ -107,6 +107,33 @@ def test_ready_marker_invalidated_when_lock_changes(layout, monkeypatch):
     assert not bs.is_ready(layout)
 
 
+def test_model_download_retries_after_dropped_connection(layout, monkeypatch):
+    """模型下載偶爾會在中途斷線；上游會從 .part 續傳，所以自動重試就好。"""
+    monkeypatch.setattr(engine_install, "download_source", lambda root, progress=None: root / "vendor" / "mit")
+    monkeypatch.setattr(bs.time, "sleep", lambda s: None)
+    base = FakeRunner(layout)
+    failures = {"left": 2}
+
+    def flaky(cmd, env, on_line, cwd=None):
+        if cmd[1:4] == ["-m", "app", "setup"] and failures["left"]:
+            failures["left"] -= 1
+            raise RuntimeError("ChunkedEncodingError: Connection broken")
+        return base(cmd, env, on_line, cwd)
+
+    inst = bs.RuntimeInstaller(layout, "cuda", runner=flaky)
+    inst.run()
+    assert inst.progress.status == "done", inst.progress.error
+    assert "重試" in (layout.logs / "setup.log").read_text(encoding="utf-8")
+
+
+def test_model_download_gives_up_after_max_attempts(layout, monkeypatch):
+    monkeypatch.setattr(engine_install, "download_source", lambda root, progress=None: root / "vendor" / "mit")
+    monkeypatch.setattr(bs.time, "sleep", lambda s: None)
+    inst = bs.RuntimeInstaller(layout, "cuda", runner=FakeRunner(layout, fail_on="setup"))
+    inst.run()
+    assert inst.progress.status == "error"
+
+
 def test_unknown_device_rejected(layout):
     with pytest.raises(ValueError):
         bs.RuntimeInstaller(layout, "tpu")

@@ -129,7 +129,24 @@ def main() -> int:
     subprocess.run([str(iscc), f"/DAppVersion={v}", str(INSTALLER / "yomitoki.iss")], check=True)
     out = BUILD / "Output" / f"Yomitoki-Setup-{v}.exe"
     print(f"完成：{out}（{out.stat().st_size / 2**20:.1f} MB）")
+    notes = render_release_notes(v, out)
+    if notes:
+        print(f"發佈說明：{notes}")
     return 0
+
+
+def render_release_notes(version: str, installer: Path) -> Path | None:
+    """把 docs/releases/v<版本>.md 的 {{SIZE}}、{{SHA256}} 換成這次建置的安裝檔。"""
+    src = ROOT / "docs" / "releases" / f"v{version}.md"
+    if not src.is_file():
+        return None
+    digest = hashlib.sha256(installer.read_bytes()).hexdigest()
+    text = src.read_text(encoding="utf-8").replace("{{SHA256}}", digest).replace(
+        "{{SIZE}}", f"{installer.stat().st_size / 2**20:.1f} MB")
+    out = installer.parent / f"release-notes-v{version}.md"
+    out.write_text(text, encoding="utf-8")
+    (installer.parent / f"{installer.name}.sha256").write_text(f"{digest}  {installer.name}\n", encoding="ascii")
+    return out
 
 
 if __name__ == "__main__":

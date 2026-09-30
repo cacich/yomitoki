@@ -34,9 +34,12 @@ from . import engine_install
 PYTHON_VERSION = "3.11.16"
 TORCH = {"cuda": ("torch==2.14.0+cu126", "torchvision==0.29.0+cu126", "https://download.pytorch.org/whl/cu126"),
          "cpu": ("torch==2.14.0+cpu", "torchvision==0.29.0+cpu", "https://download.pytorch.org/whl/cpu")}
-# 下載量估計，用來顯示進度（實際大小依版本略有不同）
-TORCH_DOWNLOAD_BYTES = {"cuda": 2_700_000_000, "cpu": 260_000_000}
-PACKAGES_DOWNLOAD_BYTES = 650_000_000
+# 下載量估計，用來顯示進度（2026-09 實測；實際大小依版本略有不同）
+# 套件裡最大的是 manga-ocr 用的日文辭典 unidic-lite（解開後約 540 MB，而且要在本機打包，比較慢）
+TORCH_DOWNLOAD_BYTES = {"cuda": 2_200_000_000, "cpu": 260_000_000}
+PACKAGES_DOWNLOAD_BYTES = 1_900_000_000
+# 模型從 GitHub Release 與 Hugging Face 下載，偶爾會在中途斷線；上游的下載器會從 .part 續傳
+MODEL_ATTEMPTS = 5
 # 需要的磁碟空間（GB）：套件 + 模型 + 安裝過程中的下載快取
 REQUIRED_GB = {"cuda": 12, "cpu": 6}
 NO_WINDOW = 0x08000000 if sys.platform == "win32" else 0
@@ -119,8 +122,9 @@ class StepInfo:
     weight: float  # 占整體進度的比例
 
 
-STEPS = [StepInfo("python", 0.03), StepInfo("venv", 0.01), StepInfo("packages", 0.2), StepInfo("torch", 0.5),
-         StepInfo("engine", 0.04), StepInfo("models", 0.2), StepInfo("finish", 0.02)]
+# 比例依實測時間：套件約 20 分鐘、PyTorch 約 4 分鐘、模型視 GitHub 的速度 5～30 分鐘
+STEPS = [StepInfo("python", 0.02), StepInfo("venv", 0.01), StepInfo("packages", 0.37), StepInfo("torch", 0.2),
+         StepInfo("engine", 0.03), StepInfo("models", 0.35), StepInfo("finish", 0.02)]
 
 
 @dataclass
@@ -227,9 +231,18 @@ class RuntimeInstaller:
         t = threading.Thread(target=ticker, daemon=True)
         t.start()
         try:
-            # 在 program\ 裡執行：python -m app 會從目前資料夾找到 Yomitoki 本身，不需要 .pth
-            self._run([str(self.layout.runtime_python), "-m", "app", "setup", "--device", self.device],
-                      self._env(), on_line, cwd=self.layout.program)
+            for attempt in range(1, MODEL_ATTEMPTS + 1):
+                try:
+                    # 在 program\ 裡執行：python -m app 會從目前資料夾找到 Yomitoki 本身，不需要 .pth
+                    self._run([str(self.layout.runtime_python), "-m", "app", "setup", "--device", self.device],
+                              self._env(), on_line, cwd=self.layout.program)
+                    break
+                except RuntimeError:
+                    if attempt == MODEL_ATTEMPTS:
+                        raise
+                    self._log(f"模型下載中斷，{5 * attempt} 秒後重試（第 {attempt + 1}/{MODEL_ATTEMPTS} 次）")
+                    last["line"] = f"連線中斷，重新連線中（第 {attempt + 1}/{MODEL_ATTEMPTS} 次）"
+                    time.sleep(5 * attempt)
         finally:
             stop.set()
             t.join(timeout=2)
@@ -239,7 +252,7 @@ class RuntimeInstaller:
                 "torch": TORCH[self.device][0], "installed": time.strftime("%Y-%m-%d %H:%M:%S")}
         self.layout.marker.write_text(json.dumps(info, ensure_ascii=False, indent=2), encoding="utf-8")
         # 清掉下載快取（PyTorch 的 wheel 就有好幾 GB）
-        shutil.rmtree(self.layout.cache, ignore_errors=True)
+        shutil.rmtree(self.layout.cache.parent, ignore_errors=True)
 
     # ── 工具 ──
     def _python_exe(self) -> Path | None:
@@ -260,9 +273,6 @@ class RuntimeInstaller:
             "PYTHONUTF8": "1",
             "PYTHONIOENCODING": "utf-8",
         })
-        # 測試用：把下載快取放到別的地方（在某些沙箱裡，自己建立的快取 junction 無法穿過）
-        if os.environ.get("YOMITOKI_UV_CACHE_DIR"):
-            env["UV_CACHE_DIR"] = os.environ["YOMITOKI_UV_CACHE_DIR"]
         env.update(extra or {})
         return env
 
@@ -316,8 +326,9 @@ class RuntimeInstaller:
 def pin_venv_home(cfg: Path, python_dir: Path) -> None:
     """uv 讓環境指向「次版本」的 junction（cpython-3.11-…），方便之後升級修補版本。
 
-    但有些安全政策不允許穿過 junction（os error 448：路徑包含不受信任的掛接點），
-    所以改成直接指向實際的資料夾（cpython-3.11.16-…）。
+    但開啟 RedirectionGuard 的程序不允許穿過一般使用者建立的 junction
+    （os error 448：路徑包含不受信任的掛接點；Inno Setup 6.5 起預設會開），
+    所以改成直接指向實際的資料夾（cpython-3.11.16-…），不管在哪種情況下都能用。
     """
     lines = [ln for ln in cfg.read_text(encoding="utf-8").splitlines() if not ln.startswith("home =")]
     cfg.write_text("\n".join([f"home = {python_dir}", *lines]) + "\n", encoding="utf-8")

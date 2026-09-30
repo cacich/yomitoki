@@ -1,6 +1,6 @@
 [project]
 name = "yomitoki"
-version = "0.0.1"
+version = "0.1.0"
 description = "Personal, multilingual manga screenshot translation reader (OCR, translation, typesetting)."
 readme = "README.md"
 license = "GPL-3.0-or-later"
