@@ -10,7 +10,7 @@
 
 Yomitoki is a personal, multilingual manga reading tool. It runs OCR, translation and typesetting on screenshots **you take yourself**, then lets you read the result in a local, hand-drawn-style reader.
 
-> **Status: pre-alpha.** Milestone M1 (repository skeleton and brand) is done. The translation core is not implemented yet.
+> **Status: pre-alpha.** M1 (skeleton and brand) and M2 (translation core, command line and local API) are done. The UI and the browser extension are not implemented yet.
 
 ## Usage notice
 
@@ -37,7 +37,7 @@ Each series keeps its own memory: a glossary, style rules and a plot summary. Ch
 | v0.2 | Vertical-scroll (webtoon) mode, Korean → Traditional Chinese, re-apply glossary without re-running OCR |
 | v0.3 | English and Chinese sources; English, Japanese and Korean targets; English UI |
 
-Development milestones: M1 skeleton and brand ✅ · M2 translation core · M3 UI · M4 browser extension · M5 installer · M6 v0.1 release.
+Development milestones: M1 skeleton and brand ✅ · M2 translation core ✅ · M3 UI · M4 browser extension · M5 installer · M6 v0.1 release.
 
 ## Customizing the look
 
@@ -53,14 +53,31 @@ To rebuild every icon size from a new source image:
 python scripts/build-icons.py --source path/to/my-icon.png
 ```
 
-## Development
+## Trying the translation core
 
-Requirements: Python 3.11+ and Node.js 20+ (used from M3 on).
+There is no installer yet (planned for M5). Set up the development environment by following [docs/development.md](docs/development.md). Then:
 
 ```bash
-python -m venv .venv
-.venv\Scripts\python -m pip install -e ".[dev]"
-.venv\Scripts\python -m pytest
+yomitoki setup
+yomitoki translate tests/fixtures/ja-page-01.png -o out.png
+```
+
+For a whole episode with per-series memory:
+
+```bash
+yomitoki series new "My Series"
+yomitoki episode run "My Series" 1
+```
+
+You can also start the local API with `yomitoki serve`: `POST /translate` takes a PNG and returns the translated PNG.
+
+## Development
+
+Requirements: Python 3.11 (manga-image-translator does not support 3.12 yet), and Node.js 20+ from M3 on. See [docs/development.md](docs/development.md) for the full setup.
+
+```bash
+.venv\Scripts\python -m pytest            # unit tests, no GPU or Claude Code needed
+.venv\Scripts\python -m pytest -m gpu     # runs the real detection / OCR / inpainting models
 ```
 
 Useful scripts:

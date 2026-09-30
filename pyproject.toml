@@ -4,15 +4,28 @@ version = "0.0.1"
 description = "Personal, multilingual manga screenshot translation reader (OCR, translation, typesetting)."
 readme = "README.md"
 license = "GPL-3.0-or-later"
-requires-python = ">=3.11"
-dependencies = []
+# manga-image-translator 目前只支援 Python 3.10–3.11
+requires-python = ">=3.11,<3.12"
+# 翻譯核心（manga-image-translator、PyTorch）另外安裝，見 requirements/ 與 docs/development.md
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "python-multipart",
+    "numpy",
+    "pillow>=10.0",
+    "opencc",
+    "truststore",
+]
 
 [project.optional-dependencies]
 dev = [
-    "pillow>=10.0",
     "resvg-py>=0.5",
     "pytest>=8.0",
+    "httpx",
 ]
+
+[project.scripts]
+yomitoki = "app.cli:main"
 
 [build-system]
 requires = ["hatchling"]
@@ -24,3 +37,8 @@ packages = ["app"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+markers = [
+    "gpu: 需要 manga-image-translator 與模型（首次會下載），執行較慢",
+    "claude: 會實際呼叫 claude -p，消耗 Claude 訂閱額度",
+]
+addopts = "-m 'not gpu and not claude'"

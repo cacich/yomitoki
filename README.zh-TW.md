@@ -10,7 +10,7 @@
 
 Yomitoki 是個人用的多語言漫畫截圖翻譯閱讀工具：對**你自己截下的畫面**做 OCR、翻譯與嵌字，再用本機的手繪風閱讀器閱讀。
 
-> **目前狀態：pre-alpha。** 已完成 M1（repo 骨架與品牌），翻譯核心尚未實作。
+> **目前狀態：pre-alpha。** 已完成 M1（骨架與品牌）與 M2（翻譯核心，命令列與本機 API），介面與瀏覽器插件尚未實作。
 
 ## 使用聲明
 
@@ -37,7 +37,7 @@ Yomitoki 是個人用的多語言漫畫截圖翻譯閱讀工具：對**你自己
 | v0.2 | 條漫模式、韓文 → 繁中、修改詞彙表後只重做嵌字 |
 | v0.3 | 英文、中文來源；英文、日文、韓文目標；介面英文版 |
 
-開發里程碑：M1 骨架與品牌 ✅ · M2 翻譯核心 · M3 介面 · M4 瀏覽器插件 · M5 安裝 · M6 v0.1 發佈。
+開發里程碑：M1 骨架與品牌 ✅ · M2 翻譯核心 ✅ · M3 介面 · M4 瀏覽器插件 · M5 安裝 · M6 v0.1 發佈。
 
 ## 自訂外觀
 
@@ -53,14 +53,31 @@ Yomitoki 是個人用的多語言漫畫截圖翻譯閱讀工具：對**你自己
 python scripts/build-icons.py --source path/to/my-icon.png
 ```
 
-## 開發
+## 試用翻譯核心
 
-需要 Python 3.11 以上，Node.js 20 以上（M3 起使用）。
+安裝檔要到 M5 才會完成，目前請先依照 [docs/development.md](docs/development.md) 建立開發環境，然後：
 
 ```bash
-python -m venv .venv
-.venv\Scripts\python -m pip install -e ".[dev]"
-.venv\Scripts\python -m pytest
+yomitoki setup
+yomitoki translate tests/fixtures/ja-page-01.png -o out.png
+```
+
+整話翻譯（帶入作品記憶）：
+
+```bash
+yomitoki series new "作品名"
+yomitoki episode run "作品名" 1
+```
+
+也可以用 `yomitoki serve` 啟動本機 API：`POST /translate` 送 PNG，回傳譯好的 PNG。
+
+## 開發
+
+需要 Python 3.11（manga-image-translator 還不支援 3.12），Node.js 20 以上（M3 起使用）。完整步驟見 [docs/development.md](docs/development.md)。
+
+```bash
+.venv\Scripts\python -m pytest            # 單元測試，不需要顯卡與 Claude Code
+.venv\Scripts\python -m pytest -m gpu     # 實際跑偵測、OCR、擦字模型
 ```
 
 | 腳本 | 用途 |

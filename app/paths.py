@@ -52,3 +52,21 @@ def data_home() -> Path:
 
 def custom_assets_dir() -> Path:
     return data_home() / "custom-assets"
+
+
+def app_home() -> Path:
+    """程式自己的檔案（模型、字型）：%LOCALAPPDATA%\\Yomitoki，不放在「文件」裡。"""
+    override = os.environ.get("YOMITOKI_APP_HOME")
+    if override:
+        return Path(override)
+    base = os.environ.get("LOCALAPPDATA") if sys.platform == "win32" else os.environ.get("XDG_DATA_HOME")
+    return Path(base) / "Yomitoki" if base else Path.home() / ".local" / "share" / "yomitoki"
+
+
+def models_dir() -> Path:
+    override = os.environ.get("YOMITOKI_MODELS")
+    return Path(override) if override else app_home() / "models"
+
+
+def fonts_dir() -> Path:
+    return app_home() / "fonts"
